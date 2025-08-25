@@ -3,6 +3,7 @@
 import sys
 from pathlib import Path
 from typing import Annotated, Optional
+import importlib
 
 import typer
 
@@ -20,8 +21,8 @@ app = typer.Typer(
 def version_callback(value: bool) -> None:
     """Show version and exit."""
     if value:
-        typer.echo("alpacasay version 0.1.0")
-        raise typer.Exit()
+        typer.echo(f"alpacasay version {importlib.metadata.version('alpacasay')}")
+        raise typer.Exit(0)
 
 
 @app.command()
@@ -32,7 +33,7 @@ def main(
         typer.Option(
             "--alpaca",
             "-a",
-            help="Choose alpaca type",
+            help=f"Choose alpaca type among {', '.join(get_available_alpacas())}",
         ),
     ] = "default",
     color: Annotated[
@@ -101,12 +102,12 @@ def main(
             err=True,
         )
         raise typer.Exit(1)
+    from alpacasay.formatter import COLOR_MAP
 
     # Validate color
-    valid_colors = ["red", "green", "blue", "yellow", "magenta", "cyan", "white"]
-    if color and color not in valid_colors:
+    if color and color not in COLOR_MAP.keys():
         typer.echo(
-            f"Error: Invalid color '{color}'. Available colors: {', '.join(valid_colors)}",
+            f"Error: Invalid color '{color}'. Available colors: {', '.join(COLOR_MAP.keys())}",
             err=True,
         )
         raise typer.Exit(1)
@@ -134,12 +135,8 @@ def main(
         raise typer.Exit(1)
 
     # Get the alpaca type
-    try:
-        alpaca_type = AlpacaType(alpaca.lower())
-    except ValueError:
-        typer.echo(f"Error: Invalid alpaca type '{alpaca}'", err=True)
-        raise typer.Exit(1)
-
+    alpaca_type = AlpacaType(alpaca.lower())
+ 
     # Format the message
     formatted_message = format_message(text, width=width, color=color)
 

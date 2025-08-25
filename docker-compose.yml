@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   alpacasay:
     build: .
@@ -10,11 +8,3 @@ services:
       - TERM=xterm-256color
     command: ["--alpaca", "happy", "--color", "green", "Hello from Docker! 🐳"]
 
-  alpacasay-prod:
-    build:
-      context: .
-      dockerfile: Dockerfile.production
-    container_name: alpacasay-prod
-    environment:
-      - TERM=xterm-256color
-    command: ["--safer-together"]

@@ -7,6 +7,15 @@ from colorama import Fore, Style, init
 # Initialize colorama for cross-platform color support
 init()
 
+COLOR_MAP = {
+    "red": Fore.RED,
+    "green": Fore.GREEN,
+    "blue": Fore.BLUE,
+    "yellow": Fore.YELLOW,
+    "magenta": Fore.MAGENTA,
+    "cyan": Fore.CYAN,
+    "white": Fore.WHITE,
+}
 
 def wrap_text(text: str, width: int = 40) -> list[str]:
     """
@@ -79,18 +88,8 @@ def colorize_text(text: str, color: str | None = None) -> str:
     if not color:
         return text
 
-    color_map = {
-        "red": Fore.RED,
-        "green": Fore.GREEN,
-        "blue": Fore.BLUE,
-        "yellow": Fore.YELLOW,
-        "magenta": Fore.MAGENTA,
-        "cyan": Fore.CYAN,
-        "white": Fore.WHITE,
-    }
-
-    if color.lower() in color_map:
-        return f"{color_map[color.lower()]}{text}{Style.RESET_ALL}"
+    if color.lower() in COLOR_MAP:
+        return f"{COLOR_MAP[color.lower()]}{text}{Style.RESET_ALL}"
 
     return text
 
