@@ -175,6 +175,3 @@ cython_debug/
 #  github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 #  Rider.gitignore
 .idea/
-
-# UV
-uv.lock
