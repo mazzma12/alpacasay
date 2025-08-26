@@ -3,13 +3,22 @@ name: Documentation
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
+
+# Least-privilege permissions for Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Avoid overlapping deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  docs:
+  build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
@@ -17,19 +26,25 @@ jobs:
       uses: astral-sh/setup-uv@v4
       with:
         enable-cache: true
-
-    - name: Set up Python
-      run: uv python install 3.11
+        python-version: 3.11
 
     - name: Install dependencies
       run: uv sync --group docs
 
     - name: Build documentation
       run: uv run mkdocs build --strict
-
-    - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main'
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./site
+        path: ./site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
