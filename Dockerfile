@@ -1,5 +1,5 @@
 # Stage 1: Build the python dependencies
-FROM docker.io/library/python:3.11-slim-bookworm AS builder
+FROM python:3.11-slim-bookworm AS builder
 
 # This approximately follows this guide: https://hynek.me/articles/docker-uv/
 # Which creates a standalone environment with the dependencies.
@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/root/.cache \
         --python=$UV_PROJECT_ENVIRONMENT
 
 # Stage 2: Final runtime image
-FROM docker.io/library/python:3.11-slim-bookworm
+FROM python:3.11-slim-bookworm
 
 # Create non-root user
 RUN groupadd -r app && \
