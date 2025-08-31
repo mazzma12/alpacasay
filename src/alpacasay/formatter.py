@@ -17,6 +17,7 @@ COLOR_MAP = {
     "white": Fore.WHITE,
 }
 
+
 def wrap_text(text: str, width: int = 40) -> list[str]:
     """
     Wrap text to fit within specified width.

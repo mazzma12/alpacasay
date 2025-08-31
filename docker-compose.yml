@@ -7,4 +7,3 @@ services:
     environment:
       - TERM=xterm-256color
     command: ["--alpaca", "happy", "--color", "green", "Hello from Docker! 🐳"]
-
