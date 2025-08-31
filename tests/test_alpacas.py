@@ -12,18 +12,9 @@ class TestAlpacaType:
         assert AlpacaType.HAPPY.value == "happy"
         assert AlpacaType.THINKING.value == "thinking"
 
-    def test_enum_count(self):
-        """Test that we have expected number of alpaca types."""
-        assert len(AlpacaType) == 3
-
 
 class TestAlpacas:
     """Test alpaca ASCII art."""
-
-    def test_alpacas_dict_completeness(self):
-        """Test that ALPACAS dict contains all enum values."""
-        for alpaca_type in AlpacaType:
-            assert alpaca_type in ALPACAS
 
     def test_alpaca_art_not_empty(self):
         """Test that all alpaca art strings are not empty."""

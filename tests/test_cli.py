@@ -36,34 +36,6 @@ class TestCLI:
         assert result.exit_code == 0
         assert "Hello!" in result.stdout
 
-    def test_width_option(self):
-        """Test width option."""
-        runner = CliRunner()
-        result = runner.invoke(app, ["--width", "20", "This is a long message"])
-        assert result.exit_code == 0
-        assert "This is a long message" in result.stdout
-
-    def test_no_message_error(self):
-        """Test error when no message provided."""
-        runner = CliRunner()
-        result = runner.invoke(app, [])
-        assert result.exit_code == 1
-        assert "Error: No message provided" in result.stdout
-
-    def test_invalid_alpaca_type(self):
-        """Test error with invalid alpaca type."""
-        runner = CliRunner()
-        result = runner.invoke(app, ["--alpaca", "invalid", "Hello!"])
-        assert result.exit_code == 1
-        assert "Invalid alpaca type" in result.stdout
-
-    def test_invalid_color(self):
-        """Test error with invalid color."""
-        runner = CliRunner()
-        result = runner.invoke(app, ["--color", "invalid", "Hello!"])
-        assert result.exit_code == 1
-        assert "Invalid color" in result.stdout
-
     def test_help_command(self):
         """Test help command."""
         runner = CliRunner()

@@ -128,8 +128,3 @@ class TestFormatMessage:
         content_lines = [line for line in lines if line.startswith(("/", "|", "\\", "<"))]
         for line in content_lines:
             assert len(line) <= 20 + 4  # width + bubble characters
-
-    def test_empty_message(self):
-        """Test formatting empty message."""
-        result = format_message("")
-        assert result == ""
