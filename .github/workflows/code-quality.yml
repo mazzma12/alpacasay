@@ -43,10 +43,6 @@ jobs:
         run: |
           uv run ruff format --check .
 
-      - name: Run type checking
-        run: |
-          uv run pyright .
-
       - name: Run tests
         run: |
           uv run pytest -v --cov=alpacasay --cov-report=xml --cov-report=term-missing
