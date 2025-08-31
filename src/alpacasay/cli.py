@@ -1,6 +1,5 @@
 """CLI interface for alpacasay."""
 
-import importlib
 import sys
 from pathlib import Path
 from typing import Annotated
@@ -9,6 +8,12 @@ import typer
 
 from alpacasay.alpacas import AlpacaType, get_alpaca_art, get_available_alpacas
 from alpacasay.formatter import format_message
+
+# Python 3.8+ stdlib
+try:
+    from importlib.metadata import version
+except ImportError:  # pragma: no cover (only for Python <3.8)
+    from importlib_metadata import version  # backport package
 
 app = typer.Typer(
     name="alpacasay",
@@ -20,7 +25,7 @@ app = typer.Typer(
 def version_callback(value: bool) -> None:
     """Show version and exit."""
     if value:
-        typer.echo(f"alpacasay version {importlib.metadata.version('alpacasay')}")
+        typer.echo(f"alpacasay version {version('alpacasay')}")
         raise typer.Exit(0)
 
 
