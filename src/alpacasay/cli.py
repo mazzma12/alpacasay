@@ -1,15 +1,14 @@
 """CLI interface for alpacasay."""
 
+import importlib
 import sys
 from pathlib import Path
-from typing import Annotated, Optional
-import importlib
+from typing import Annotated
 
 import typer
 
 from alpacasay.alpacas import AlpacaType, get_alpaca_art, get_available_alpacas
 from alpacasay.formatter import format_message
-
 
 app = typer.Typer(
     name="alpacasay",
@@ -27,7 +26,7 @@ def version_callback(value: bool) -> None:
 
 @app.command()
 def main(
-    message: Annotated[Optional[str], typer.Argument(help="Message to display")] = None,
+    message: Annotated[str | None, typer.Argument(help="Message to display")] = None,
     alpaca: Annotated[
         str,
         typer.Option(
@@ -37,7 +36,7 @@ def main(
         ),
     ] = "default",
     color: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--color",
             "-c",
@@ -60,7 +59,7 @@ def main(
         ),
     ] = False,
     file: Annotated[
-        Optional[Path],
+        Path | None,
         typer.Option(
             "--file",
             "-f",
@@ -72,7 +71,7 @@ def main(
         ),
     ] = None,
     version: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option(
             "--version",
             callback=version_callback,
@@ -116,11 +115,8 @@ def main(
     if safer_together:
         text = "Safer, Together!"
     elif file:
-        try:
-            text = file.read_text(encoding="utf-8").strip()
-        except Exception as e:
-            typer.echo(f"Error reading file: {e}", err=True)
-            raise typer.Exit(1)
+        text = file.read_text(encoding="utf-8").strip()
+
     elif message:
         text = message
     elif not sys.stdin.isatty():
@@ -136,7 +132,7 @@ def main(
 
     # Get the alpaca type
     alpaca_type = AlpacaType(alpaca.lower())
- 
+
     # Format the message
     formatted_message = format_message(text, width=width, color=color)
 
