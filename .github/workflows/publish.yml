@@ -3,7 +3,8 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
-
+  push:
+    tags: ["*"]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,9 +28,7 @@ jobs:
   publish:
     needs: test
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write  # For trusted publishing to PyPI
-
+    environment: ${{ github.event_name == 'release' && 'prod' || 'dev' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -47,4 +46,5 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository-url: ${{ vars.PYPI_REPOSITORY_URL }}
